@@ -330,3 +330,29 @@
   </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e3f3649e77926d9',t:'MTc3NDc5MDg0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
+<div id="slideshow" style="text-align:center;">
+  <img id="slide" src="slide1.png" width="600">
+  <br><br>
+  <button onclick="prevSlide()">⬅️</button>
+  <button onclick="nextSlide()">➡️</button>
+</div>
+
+<script>
+let slides = ["myTDEE.png", "Diet options.png"]; 
+let current = 0;
+
+function showSlide() {
+  document.getElementById("slide").src = slides[current];
+}
+
+function nextSlide() {
+  current = (current + 1) % slides.length;
+  showSlide();
+}
+
+function prevSlide() {
+  current = (current - 1 + slides.length) % slides.length;
+  showSlide();
+}
+</script>
