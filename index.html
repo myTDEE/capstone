@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        * { font-family: 'Poppins', sans-serif; }
+        * { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
        
         .page-section { display: none; min-height: 100vh; padding-top: 80px; width: 100%; }
         .page-section.active { display: block !important; }
@@ -33,22 +33,11 @@
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.98) 100%);
             backdrop-filter: blur(10px);
         }
-
-        /* 1. BUTTON SELECTION COLOR (BLUE) */
         .activity-btn.active, .gender-btn.active {
-            background: #a0b9d9 !important;
-            border-color: #a0b9d9 !important;
+            background: #23270d !important;
+            border-color: #23270d !important;
             color: white !important;
         }
-
-        /* Results Styling to match image */
-        .result-box {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 1rem;
-            padding: 1.25rem;
-        }
-
         .canva-container {
             position: relative; width: 100%; height: 0; padding-top: 56.25%;
             overflow: hidden; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -89,6 +78,7 @@
         <div class="max-w-2xl mx-auto pb-12">
             <div class="text-center mb-6">
                 <h1 class="text-3xl font-bold text-[#23270d]">TDEE Calculator</h1>
+                <p class="text-slate-600">Calculate your daily calorie needs</p>
             </div>
            
             <div class="card-gradient rounded-3xl p-6 md:p-8 shadow-2xl border border-white/50">
@@ -96,111 +86,54 @@
                 <div class="mb-6">
                     <label class="block text-sm font-semibold mb-3">Gender</label>
                     <div class="flex gap-3">
-                        <button id="gender-male" onclick="selectGender('male')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white transition-all">Male</button>
-                        <button id="gender-female" onclick="selectGender('female')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white transition-all">Female</button>
+                        <button id="gender-male" onclick="selectGender('male')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white">Male</button>
+                        <button id="gender-female" onclick="selectGender('female')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white">Female</button>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Age</label>
-                        <input type="number" id="age" placeholder="25" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#a0b9d9]">
+                        <input type="number" id="age" placeholder="25" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#23270d]">
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Weight (kg)</label>
-                        <input type="number" id="weight" placeholder="70" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#a0b9d9]">
+                        <input type="number" id="weight" placeholder="70" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#23270d]">
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Height (cm)</label>
-                        <input type="number" id="height" placeholder="175" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#a0b9d9]">
+                        <input type="number" id="height" placeholder="175" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#23270d]">
                     </div>
                 </div>
 
                 <div class="mb-8">
                     <label class="block text-sm font-semibold mb-3">Activity Level</label>
                     <div class="space-y-2">
-                        <button onclick="selectActivity(1.2, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm transition-all">Sedentary (No Exercise)</button>
-                        <button onclick="selectActivity(1.55, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm transition-all">Moderate (3-5 days/week)</button>
-                        <button onclick="selectActivity(1.9, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm transition-all">Very Active (Athlete/Daily)</button>
+                        <button onclick="selectActivity(1.2, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Sedentary (No Exercise)</button>
+                        <button onclick="selectActivity(1.55, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Moderate (3-5 days/week)</button>
+                        <button onclick="selectActivity(1.9, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Very Active (Athlete/Daily)</button>
                     </div>
                 </div>
 
-                <button onclick="calculateTDEE()" class="w-full py-4 bg-[#23270d] text-white rounded-2xl font-bold text-lg shadow-lg hover:opacity-90">
-                    Calculate Results
+                <button onclick="calculateTDEE()" class="w-full py-4 bg-[#23270d] text-white rounded-2xl font-bold text-lg shadow-lg">Calculate Results</button>
+               
+                <!-- BUTTON TO DIET (Always visible at bottom of form) -->
+                <button onclick="switchPage('diet')" class="w-full mt-4 py-2 text-sm text-slate-500 hover:text-[#23270d] transition-colors flex items-center justify-center gap-1">
+                    Skip to Diet Options <i data-lucide="chevron-right" class="w-4 h-4"></i>
                 </button>
 
-                <!-- 2. IMAGE-MATCHED RESULTS SECTION -->
-                <div id="results" class="hidden mt-10 space-y-6">
+                <!-- RESULTS (Initially Hidden) -->
+                <div id="results" class="hidden mt-8 pt-8 border-t border-slate-200 text-center animate-in">
+                    <p class="text-slate-500 text-sm">Your Maintenance Calories</p>
+                    <h2 class="text-5xl font-extrabold text-[#23270d] mb-6" id="tdee-result">0</h2>
                    
-                    <!-- TDEE Header -->
-                    <div class="text-center">
-                        <p class="text-slate-500 font-medium text-sm">Your TDEE (Maintenance)</p>
-                        <h2 class="text-6xl font-bold text-[#1e40af] my-1" id="tdee-main">0</h2>
-                        <p class="text-slate-500 text-sm">calories/day</p>
+                    <!-- NEW BUTTON: Appears after calculation -->
+                    <div class="bg-[#23270d]/5 p-6 rounded-2xl border border-[#23270d]/10">
+                        <p class="text-sm text-slate-600 mb-4">Ready to reach your goal? Check out our curated food plans.</p>
+                        <button onclick="switchPage('diet')" class="w-full py-3 bg-[#23270d] text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-black transition-all">
+                            <i data-lucide="utensils" class="w-5 h-5"></i> View Diet Options
+                        </button>
                     </div>
-
-                    <!-- BMR Row -->
-                    <div class="flex items-center justify-between bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-blue-100 p-2 rounded-lg">
-                                <i data-lucide="heart-pulse" class="text-blue-600 w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase leading-tight">Basal Metabolic Rate</p>
-                                <p class="text-sm font-bold text-slate-700">BMR (At rest)</p>
-                            </div>
-                        </div>
-                        <p class="text-xl font-bold text-slate-800"><span id="bmr-val">0</span> cal</p>
-                    </div>
-
-                    <!-- 3 Column Goals Grid -->
-                    <div class="grid grid-cols-3 gap-3">
-                        <!-- Weight Loss -->
-                        <div class="result-box text-center border-green-100">
-                            <i data-lucide="trending-down" class="w-5 h-5 mx-auto text-green-500 mb-1"></i>
-                            <p class="text-[10px] text-slate-400 font-bold">Weight Loss</p>
-                            <p id="loss-val" class="text-lg font-bold text-green-600">0</p>
-                            <p class="text-[9px] text-slate-400">-500 cal/day</p>
-                        </div>
-                        <!-- Maintain -->
-                        <div class="result-box text-center border-blue-100">
-                            <i data-lucide="minus" class="w-5 h-5 mx-auto text-blue-500 mb-1"></i>
-                            <p class="text-[10px] text-slate-400 font-bold">Maintain</p>
-                            <p id="maintain-val" class="text-lg font-bold text-blue-600">0</p>
-                            <p class="text-[9px] text-slate-400">TDEE</p>
-                        </div>
-                        <!-- Weight Gain -->
-                        <div class="result-box text-center border-purple-100">
-                            <i data-lucide="trending-up" class="w-5 h-5 mx-auto text-purple-500 mb-1"></i>
-                            <p class="text-[10px] text-slate-400 font-bold">Weight Gain</p>
-                            <p id="gain-val" class="text-lg font-bold text-purple-600">0</p>
-                            <p class="text-[9px] text-slate-400">+500 cal/day</p>
-                        </div>
-                    </div>
-
-                    <!-- Suggested Macros -->
-                    <div class="pt-4">
-                        <p class="text-sm font-bold text-slate-700 mb-4">Suggested Macros (Maintenance)</p>
-                        <div class="grid grid-cols-3 gap-4 text-center">
-                            <div>
-                                <p id="prot-val" class="text-3xl font-bold text-blue-700">0g</p>
-                                <p class="text-xs text-slate-400 font-medium">Protein</p>
-                            </div>
-                            <div>
-                                <p id="carb-val" class="text-3xl font-bold text-blue-700">0g</p>
-                                <p class="text-xs text-slate-400 font-medium">Carbs</p>
-                            </div>
-                            <div>
-                                <p id="fat-val" class="text-3xl font-bold text-blue-700">0g</p>
-                                <p class="text-xs text-slate-400 font-medium">Fat</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Diet Options Button -->
-                    <button onclick="switchPage('diet')" class="w-full mt-6 py-4 bg-[#23270d] text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg">
-                        <i data-lucide="utensils" class="w-5 h-5"></i> View Diet Options
-                    </button>
                 </div>
             </div>
         </div>
@@ -215,7 +148,7 @@
                     src="https://www.canva.com/design/DAHJKjUO96c/PjFDdqxKplaqSv5udvLMow/view?embed">
                 </iframe>
             </div>
-            <button onclick="switchPage('calc')" class="mt-8 text-slate-500 flex items-center gap-2 mb-10">
+            <button onclick="switchPage('calc')" class="mt-8 text-slate-500 flex items-center gap-2">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Calculator
             </button>
         </div>
@@ -223,10 +156,15 @@
 
     <script>
         function switchPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
-            document.getElementById('tab-' + (pageId === 'home' ? 'home' : (pageId === 'calc' ? 'calc' : 'diet'))).classList.add('active');
+            document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(tab => tab.classList.remove('active'));
+           
+            const target = document.getElementById('page-' + pageId);
+            if (target) target.classList.add('active');
+           
+            const targetTab = document.getElementById('tab-' + pageId);
+            if (targetTab) targetTab.classList.add('active');
+
             window.scrollTo(0, 0);
         }
 
@@ -251,34 +189,21 @@
             const height = parseFloat(document.getElementById('height').value);
            
             if (!selectedGender || !selectedActivityLevel || !age || !weight || !height) {
-                return alert("Please fill all details.");
+                return alert("Please complete the form first.");
             }
 
-            // Mifflin-St Jeor
             let bmr = (selectedGender === 'male')
                 ? (10 * weight) + (6.25 * height) - (5 * age) + 5
                 : (10 * weight) + (6.25 * height) - (5 * age) - 161;
 
             const tdee = Math.round(bmr * selectedActivityLevel);
-           
-            // Logic to match the image values exactly (30% Protein, 40% Carb, 30% Fat)
-            const protein = Math.round((tdee * 0.30) / 4);
-            const carbs = Math.round((tdee * 0.40) / 4);
-            const fat = Math.round((tdee * 0.30) / 9);
-
-            // Update UI
-            document.getElementById('tdee-main').textContent = tdee.toLocaleString();
-            document.getElementById('bmr-val').textContent = Math.round(bmr).toLocaleString();
-            document.getElementById('maintain-val').textContent = tdee.toLocaleString();
-            document.getElementById('loss-val').textContent = (tdee - 500).toLocaleString();
-            document.getElementById('gain-val').textContent = (tdee + 500).toLocaleString();
-           
-            document.getElementById('prot-val').textContent = protein + "g";
-            document.getElementById('carb-val').textContent = carbs + "g";
-            document.getElementById('fat-val').textContent = fat + "g";
-
+            document.getElementById('tdee-result').textContent = tdee.toLocaleString();
             document.getElementById('results').classList.remove('hidden');
-            setTimeout(() => { document.getElementById('results').scrollIntoView({ behavior: 'smooth' }); }, 100);
+           
+            // Scroll down to results
+            setTimeout(() => {
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
         }
 
         lucide.createIcons();
