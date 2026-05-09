@@ -156,3 +156,130 @@
                             <button onclick="selectActivity(1.2, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Sedentary (No Exercise)</button>
                             <button onclick="selectActivity(1.55, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Moderate (3-5 days/week)</button>
                             <button onclick="selectActivity(1.9, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Very Active (Athlete/Daily)</button>
+                        </div>
+                    </div>
+
+                    <button onclick="calculateTDEE()" class="w-full py-4 bg-[#23270d] text-white rounded-2xl font-bold text-lg shadow-lg">Calculate Results</button>
+
+                    <!-- RESULTS AREA (IMAGE MATCHED) -->
+                    <div id="results" class="hidden mt-10 space-y-6">
+                        <div class="text-center">
+                            <p class="text-slate-500 font-medium text-sm">Your TDEE (Maintenance)</p>
+                            <h2 class="text-6xl font-bold text-[#1e40af] my-1" id="tdee-main">0</h2>
+                            <p class="text-slate-500 text-sm">calories/day</p>
+                        </div>
+
+                        <div class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-blue-100 p-2 rounded-lg text-blue-600"><i data-lucide="heart-pulse"></i></div>
+                                <div>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase leading-tight">Basal Metabolic Rate</p>
+                                    <p class="text-sm font-bold text-slate-700">BMR (At rest)</p>
+                                </div>
+                            </div>
+                            <p class="text-xl font-bold text-slate-800"><span id="bmr-val">0</span> cal</p>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="result-box text-center">
+                                <i data-lucide="trending-down" class="w-4 h-4 mx-auto text-green-500 mb-1"></i>
+                                <p class="text-[9px] text-slate-400 font-bold uppercase">Weight Loss</p>
+                                <p id="loss-val" class="text-lg font-bold text-green-600">0</p>
+                                <p class="text-[8px] text-slate-400">-500 cal/day</p>
+                            </div>
+                            <div class="result-box text-center border-blue-200">
+                                <i data-lucide="minus" class="w-4 h-4 mx-auto text-blue-500 mb-1"></i>
+                                <p class="text-[9px] text-slate-400 font-bold uppercase">Maintain</p>
+                                <p id="maintain-val" class="text-lg font-bold text-blue-600">0</p>
+                                <p class="text-[8px] text-slate-400">TDEE</p>
+                            </div>
+                            <div class="result-box text-center">
+                                <i data-lucide="trending-up" class="w-4 h-4 mx-auto text-purple-500 mb-1"></i>
+                                <p class="text-[9px] text-slate-400 font-bold uppercase">Weight Gain</p>
+                                <p id="gain-val" class="text-lg font-bold text-purple-600">0</p>
+                                <p class="text-[8px] text-slate-400">+500 cal/day</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 text-center">
+                            <p class="text-sm font-bold text-slate-700 mb-4">Suggested Macros (Maintenance)</p>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div><p id="prot-val" class="text-2xl font-bold text-blue-700">0g</p><p class="text-[10px] text-slate-400 uppercase">Protein</p></div>
+                                <div><p id="carb-val" class="text-2xl font-bold text-blue-700">0g</p><p class="text-[10px] text-slate-400 uppercase">Carbs</p></div>
+                                <div><p id="fat-val" class="text-2xl font-bold text-blue-700">0g</p><p class="text-[10px] text-slate-400 uppercase">Fat</p></div>
+                            </div>
+                        </div>
+
+                        <button onclick="switchPage('diet')" class="w-full mt-4 py-4 bg-[#23270d] text-white rounded-2xl font-bold flex items-center justify-center gap-2">
+                            <i data-lucide="utensils"></i> View Diet Options
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 3: DIET OPTIONS (TRUE FULL SCREEN) -->
+    <section id="page-diet" class="page-section">
+        <iframe class="canva-iframe" src="https://www.canva.com/design/DAHJKjUO96c/PjFDdqxKplaqSv5udvLMow/view?embed"></iframe>
+        <div class="floating-btn-container">
+            <button onclick="switchPage('calc')" class="floating-btn flex items-center gap-2">
+                <i data-lucide="arrow-left"></i> Back to Calculator
+            </button>
+        </div>
+    </section>
+
+    <script>
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('tab-' + (pageId === 'home' ? 'home' : (pageId === 'calc' ? 'calc' : 'diet'))).classList.add('active');
+        }
+
+        let selectedGender = null;
+        let selectedActivityLevel = null;
+
+        function selectGender(gender) {
+            selectedGender = gender;
+            document.querySelectorAll('.gender-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`gender-${gender}`).classList.add('active');
+        }
+
+        function selectActivity(level, btn) {
+            selectedActivityLevel = level;
+            document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function calculateTDEE() {
+            const age = parseInt(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            
+            if (!selectedGender || !selectedActivityLevel || !age || !weight || !height) return alert("Please complete form");
+
+            let bmr = (selectedGender === 'male') 
+                ? (10 * weight) + (6.25 * height) - (5 * age) + 5 
+                : (10 * weight) + (6.25 * height) - (5 * age) - 161;
+
+            const tdee = Math.round(bmr * selectedActivityLevel);
+            
+            document.getElementById('tdee-main').textContent = tdee.toLocaleString();
+            document.getElementById('bmr-val').textContent = Math.round(bmr).toLocaleString();
+            document.getElementById('maintain-val').textContent = tdee.toLocaleString();
+            document.getElementById('loss-val').textContent = (tdee - 500).toLocaleString();
+            document.getElementById('gain-val').textContent = (tdee + 500).toLocaleString();
+            
+            document.getElementById('prot-val').textContent = Math.round((tdee * 0.3) / 4) + "g";
+            document.getElementById('carb-val').textContent = Math.round((tdee * 0.4) / 4) + "g";
+            document.getElementById('fat-val').textContent = Math.round((tdee * 0.3) / 9) + "g";
+
+            document.getElementById('results').classList.remove('hidden');
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
