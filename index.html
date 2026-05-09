@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="h-full w-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,16 +11,26 @@
 
     <style>
         * { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { height: 100%; width: 100%; overflow-x: hidden; }
+        
+        /* THE KEY TO FULL SCREEN */
+        body, html { 
+            height: 100%; 
+            width: 100%; 
+            overflow: hidden; /* Prevents double scrollbars */
+        }
 
-        /* FULL PAGE SECTION LOGIC */
         .page-section { 
             display: none; 
             height: 100vh; 
             width: 100vw; 
-            position: relative;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
-        .page-section.active { display: block; }
+
+        .page-section.active { 
+            display: block; 
+        }
 
         /* NAVIGATION BAR */
         .nav-bar {
@@ -34,55 +44,56 @@
         }
         .nav-item.active { color: #23270d; font-weight: 700; }
 
-        /* FULL SCREEN IFRAME */
+        /* TRUE FULLSCREEN IFRAME */
         .canva-iframe {
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             border: none;
-            padding-top: 60px; /* Space for the Top Nav */
+            display: block;
         }
 
-        /* FLOATING ACTION BUTTON */
+        /* FLOATING ACTION BUTTON OVER CANVA */
         .floating-btn-container {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             left: 0;
             width: 100%;
             display: flex;
             justify-content: center;
             z-index: 50;
-            pointer-events: none; /* Allow clicking through container */
         }
         .floating-btn {
-            pointer-events: auto; /* Re-enable for button */
             background: #23270d;
             color: white;
-            padding: 16px 32px;
+            padding: 14px 28px;
             border-radius: 9999px;
             font-weight: 700;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             transition: transform 0.2s;
         }
         .floating-btn:hover { transform: scale(1.05); }
 
-        /* CALCULATOR STYLING */
-        .gradient-bg {
-            background: linear-gradient(180deg, #f8f6f4 0%, #f1f5bc 25%, #ecf2a0 50%, #e4f28a 75%, #f8f6f4 100%);
+        /* CALCULATOR SECTION */
+        .calc-container {
+            height: 100vh;
             overflow-y: auto;
-            padding-top: 80px;
+            padding: 100px 20px 40px 20px;
+            background: linear-gradient(180deg, #f8f6f4 0%, #f1f5bc 25%, #ecf2a0 50%, #e4f28a 75%, #f8f6f4 100%);
         }
-        /* Blue Selection Color */
+
+        /* BLUE SELECTION COLOR */
         .activity-btn.active, .gender-btn.active {
             background: #a0b9d9 !important;
             border-color: #a0b9d9 !important;
             color: white !important;
         }
+
         .result-box {
             background: white; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.25rem;
         }
     </style>
 </head>
-<body class="bg-slate-50">
+<body>
 
     <!-- TOP NAVIGATION -->
     <nav class="nav-bar">
@@ -97,7 +108,7 @@
         </div>
     </nav>
 
-    <!-- PAGE 1: HOME (FULL SCREEN) -->
+    <!-- PAGE 1: HOME (TRUE FULL SCREEN) -->
     <section id="page-home" class="page-section active">
         <iframe class="canva-iframe" src="https://www.canva.com/design/DAHFDXpSJgo/_yQz355KAXtsmI1DT7VzoA/view?embed"></iframe>
         <div class="floating-btn-container">
@@ -108,106 +119,40 @@
     </section>
 
     <!-- PAGE 2: THE CALCULATOR -->
-    <section id="page-calc" class="page-section gradient-bg px-4">
-        <div class="max-w-2xl mx-auto pb-12">
-            <div class="text-center mb-6">
-                <h1 class="text-3xl font-bold text-[#23270d]">TDEE Calculator</h1>
-            </div>
-           
-            <div class="bg-white/80 backdrop-blur rounded-3xl p-6 md:p-8 shadow-2xl border border-white">
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold mb-3">Gender</label>
-                    <div class="flex gap-3">
-                        <button id="gender-male" onclick="selectGender('male')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white transition-all">Male</button>
-                        <button id="gender-female" onclick="selectGender('female')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white transition-all">Female</button>
-                    </div>
+    <section id="page-calc" class="page-section">
+        <div class="calc-container">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-6">
+                    <h1 class="text-3xl font-bold text-[#23270d]">TDEE Calculator</h1>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Age</label>
-                        <input type="number" id="age" placeholder="25" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#a0b9d9]">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Weight (kg)</label>
-                        <input type="number" id="weight" placeholder="70" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#a0b9d9]">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Height (cm)</label>
-                        <input type="number" id="height" placeholder="175" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#a0b9d9]">
-                    </div>
-                </div>
-
-                <div class="mb-8">
-                    <label class="block text-sm font-semibold mb-3">Activity Level</label>
-                    <div class="space-y-2">
-                        <button onclick="selectActivity(1.2, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Sedentary (No Exercise)</button>
-                        <button onclick="selectActivity(1.55, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Moderate (3-5 days/week)</button>
-                        <button onclick="selectActivity(1.9, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Very Active (Athlete/Daily)</button>
-                    </div>
-                </div>
-
-                <button onclick="calculateTDEE()" class="w-full py-4 bg-[#23270d] text-white rounded-2xl font-bold text-lg shadow-lg">Calculate Results</button>
-
-                <!-- RESULTS UI (IMAGE MATCHED) -->
-                <div id="results" class="hidden mt-10 space-y-6">
-                    <div class="text-center">
-                        <p class="text-slate-500 font-medium text-sm">Your TDEE (Maintenance)</p>
-                        <h2 class="text-6xl font-bold text-[#1e40af] my-1" id="tdee-main">0</h2>
-                        <p class="text-slate-500 text-sm">calories/day</p>
-                    </div>
-
-                    <div class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-blue-100 p-2 rounded-lg"><i data-lucide="heart-pulse" class="text-blue-600 w-5 h-5"></i></div>
-                            <div>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase leading-tight">Basal Metabolic Rate</p>
-                                <p class="text-sm font-bold text-slate-700">BMR (At rest)</p>
-                            </div>
-                        </div>
-                        <p class="text-xl font-bold text-slate-800"><span id="bmr-val">0</span> cal</p>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="result-box text-center border-green-100">
-                            <i data-lucide="trending-down" class="w-5 h-5 mx-auto text-green-500 mb-1"></i>
-                            <p class="text-[10px] text-slate-400 font-bold">Weight Loss</p>
-                            <p id="loss-val" class="text-lg font-bold text-green-600">0</p>
-                            <p class="text-[9px] text-slate-400">-500 cal/day</p>
-                        </div>
-                        <div class="result-box text-center border-blue-100">
-                            <i data-lucide="minus" class="w-5 h-5 mx-auto text-blue-500 mb-1"></i>
-                            <p class="text-[10px] text-slate-400 font-bold">Maintain</p>
-                            <p id="maintain-val" class="text-lg font-bold text-blue-600">0</p>
-                            <p class="text-[9px] text-slate-400">TDEE</p>
-                        </div>
-                        <div class="result-box text-center border-purple-100">
-                            <i data-lucide="trending-up" class="w-5 h-5 mx-auto text-purple-500 mb-1"></i>
-                            <p class="text-[10px] text-slate-400 font-bold">Weight Gain</p>
-                            <p id="gain-val" class="text-lg font-bold text-purple-600">0</p>
-                            <p class="text-[9px] text-slate-400">+500 cal/day</p>
+               
+                <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-2xl border border-white">
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold mb-3">Gender</label>
+                        <div class="flex gap-3">
+                            <button id="gender-male" onclick="selectGender('male')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white">Male</button>
+                            <button id="gender-female" onclick="selectGender('female')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white">Female</button>
                         </div>
                     </div>
 
-                    <div class="pt-4">
-                        <p class="text-sm font-bold text-slate-700 mb-4">Suggested Macros (Maintenance)</p>
-                        <div class="grid grid-cols-3 gap-4 text-center">
-                            <div><p id="prot-val" class="text-2xl font-bold text-blue-700">0g</p><p class="text-[10px] text-slate-400">Protein</p></div>
-                            <div><p id="carb-val" class="text-2xl font-bold text-blue-700">0g</p><p class="text-[10px] text-slate-400">Carbs</p></div>
-                            <div><p id="fat-val" class="text-2xl font-bold text-blue-700">0g</p><p class="text-[10px] text-slate-400">Fat</p></div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Age</label>
+                            <input type="number" id="age" placeholder="25" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#a0b9d9]">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Weight (kg)</label>
+                            <input type="number" id="weight" placeholder="70" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#a0b9d9]">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Height (cm)</label>
+                            <input type="number" id="height" placeholder="175" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#a0b9d9]">
                         </div>
                     </div>
 
-                    <button onclick="switchPage('diet')" class="w-full mt-6 py-4 bg-[#23270d] text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg">
-                        <i data-lucide="utensils" class="w-5 h-5"></i> View Diet Options
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PAGE 3: DIET OPTIONS (FULL SCREEN) -->
-    <section id="page-diet" class="page-section">
-        <iframe class="canva-iframe" src="https://www.canva.com/design/DAHJKjUO96c/PjFDdqxKplaqSv5udvLMow/view?embed"></iframe>
-        <div class="floating-btn-container">
-            <button onclick="switchPag
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold mb-3">Activity Level</label>
+                        <div class="space-y-2">
+                            <button onclick="selectActivity(1.2, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Sedentary (No Exercise)</button>
+                            <button onclick="selectActivity(1.55, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Moderate (3-5 days/week)</button>
+                            <button onclick="selectActivity(1.9, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Very Active (Athlete/Daily)</button>
