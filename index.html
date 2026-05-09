@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fitness Slideshow</title>
     
-    <!-- External Resources from your TDEE Calculator -->
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -51,16 +50,15 @@
 <body class="h-full overflow-x-hidden">
 
     <!-- PAGE 1: INTRO SLIDE -->
- <div style="position: relative; width: 100%; height: 0; padding-top: 357.8331%;
- padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
- border-radius: 8px; will-change: transform;">
-  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
-    src="https://www.canva.com/design/DAHFDXpSJgo/_yQz355KAXtsmI1DT7VzoA/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
-  </iframe>
-</div>
-<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAHFDXpSJgo&#x2F;_yQz355KAXtsmI1DT7VzoA&#x2F;view?utm_content=DAHFDXpSJgo&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">myTDEE</a> by PANNAPAS JESADAPATARAKUL
+    <section id="slide1" class="slide-section active">
+        <div style="position: relative; width: 100%; height: 0; padding-top: 56.25%; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); overflow: hidden; will-change: transform;">
+            <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+                src="https://www.canva.com/design/DAHFDXpSJgo/_yQz355KAXtsmI1DT7VzoA/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+            </iframe>
+        </div>
+    </section>
 
-    <!-- PAGE 2: TDEE CALCULATOR (YOUR CODE) -->
+    <!-- PAGE 2: TDEE CALCULATOR -->
     <section id="slide2" class="slide-section gradient-bg">
         <div class="min-h-full w-full py-8 px-4">
             <div class="max-w-2xl mx-auto">
@@ -113,14 +111,14 @@
     </section>
 
     <!-- PAGE 3: OUTRO SLIDE -->
-<div style="position: relative; width: 100%; height: 0; padding-top: 281.1127%;
- padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
- border-radius: 8px; will-change: transform;">
-  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
-    src="https://www.canva.com/design/DAHJKjUO96c/PjFDdqxKplaqSv5udvLMow/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
-  </iframe>
-</div>
-<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAHJKjUO96c&#x2F;PjFDdqxKplaqSv5udvLMow&#x2F;view?utm_content=DAHJKjUO96c&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">Copy of myTDEE</a> by PANNAPAS JESADAPATARAKUL
+    <section id="slide3" class="slide-section">
+        <div style="position: relative; width: 100%; height: 0; padding-top: 56.25%; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); overflow: hidden; will-change: transform;">
+            <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+                src="https://www.canva.com/design/DAHJKjUO96c/PjFDdqxKplaqSv5udvLMow/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+            </iframe>
+        </div>
+    </section>
+
     <!-- FLOATING NAVIGATION -->
     <div class="nav-container">
         <button id="prevBtn" class="nav-btn" onclick="moveSlide(-1)" disabled>Previous</button>
@@ -131,12 +129,19 @@
         // Slideshow Logic
         let currentStep = 1;
         function moveSlide(direction) {
+            // Hide current slide
             document.getElementById(`slide${currentStep}`).classList.remove('active');
+            
+            // Change step
             currentStep += direction;
+            
+            // Show new slide
             document.getElementById(`slide${currentStep}`).classList.add('active');
             
+            // Button states
             document.getElementById('prevBtn').disabled = (currentStep === 1);
             document.getElementById('nextBtn').disabled = (currentStep === 3);
+            
             window.scrollTo(0,0);
         }
 
