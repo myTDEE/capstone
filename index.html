@@ -10,11 +10,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        * { font-family: 'Poppins', sans-serif; }
+        * { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* NAVIGATION LOGIC - This hides inactive pages */
-        .page-section { display: none; min-height: 100vh; padding-top: 80px; width: 100%; }
-        .page-section.active { display: block; }
+        /* THE MAGIC: All pages are hidden by default */
+        .page-section { 
+            display: none; 
+            min-height: 100vh; 
+            padding-top: 80px; 
+            width: 100%; 
+        }
+
+        /* Only the section with the 'active' class is shown */
+        .page-section.active { 
+            display: block !important; 
+        }
 
         .nav-bar {
             position: fixed; top: 0; left: 0; width: 100%; background: white;
@@ -27,7 +36,7 @@
         }
         .nav-item.active { color: #23270d; font-weight: 700; }
 
-        /* CALCULATOR STYLING */
+        /* Calculator Styles */
         .gradient-bg {
             background: linear-gradient(180deg, #f8f6f4 0%, #f1f5bc 25%, #ecf2a0 50%, #e4f28a 75%, #f8f6f4 100%);
         }
@@ -48,7 +57,7 @@
 </head>
 <body class="h-full bg-slate-50">
 
-    <!-- TOP NAVIGATION -->
+    <!-- NAVIGATION -->
     <nav class="nav-bar">
         <div id="tab-home" class="nav-item active" onclick="switchPage('home')">
             <i data-lucide="home" class="w-5 h-5 mb-1"></i><span>Home</span>
@@ -69,13 +78,14 @@
                     src="https://www.canva.com/design/DAHFDXpSJgo/_yQz355KAXtsmI1DT7VzoA/view?embed">
                 </iframe>
             </div>
+            <!-- This button triggers the calculator page -->
             <button onclick="switchPage('calc')" class="px-8 py-4 bg-[#23270d] text-white rounded-full font-bold shadow-lg hover:scale-105 transition-all flex items-center gap-2">
                 <i data-lucide="play" class="w-5 h-5"></i> Start Calculation
             </button>
         </div>
     </section>
 
-    <!-- PAGE 2: THE CALCULATOR -->
+    <!-- PAGE 2: THE CALCULATOR (Only visible when active) -->
     <section id="page-calc" class="page-section gradient-bg px-4">
         <div class="max-w-2xl mx-auto pb-12">
             <div class="text-center mb-6">
@@ -87,32 +97,32 @@
                 <div class="mb-6">
                     <label class="block text-sm font-semibold mb-3">Gender</label>
                     <div class="flex gap-3">
-                        <button id="gender-male" onclick="selectGender('male')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white transition-all">Male</button>
-                        <button id="gender-female" onclick="selectGender('female')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white transition-all">Female</button>
+                        <button id="gender-male" onclick="selectGender('male')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white">Male</button>
+                        <button id="gender-female" onclick="selectGender('female')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white">Female</button>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Age</label>
-                        <input type="number" id="age" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#23270d]">
+                        <input type="number" id="age" placeholder="25" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#23270d]">
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Weight (kg)</label>
-                        <input type="number" id="weight" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#23270d]">
+                        <input type="number" id="weight" placeholder="70" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#23270d]">
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Height (cm)</label>
-                        <input type="number" id="height" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#23270d]">
+                        <input type="number" id="height" placeholder="175" class="w-full p-3 bg-white rounded-xl border-2 border-slate-100 outline-none focus:border-[#23270d]">
                     </div>
                 </div>
 
                 <div class="mb-8">
                     <label class="block text-sm font-semibold mb-3">Activity Level</label>
                     <div class="space-y-2">
-                        <button onclick="selectActivity(1.2, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm transition-all">Sedentary (No Exercise)</button>
-                        <button onclick="selectActivity(1.55, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm transition-all">Moderate (3-5 days/week)</button>
-                        <button onclick="selectActivity(1.9, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm transition-all">Very Active (Daily)</button>
+                        <button onclick="selectActivity(1.2, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Sedentary (No Exercise)</button>
+                        <button onclick="selectActivity(1.55, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Moderate (3-5 days/week)</button>
+                        <button onclick="selectActivity(1.9, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm">Very Active (Athlete/Daily)</button>
                     </div>
                 </div>
 
@@ -126,7 +136,7 @@
         </div>
     </section>
     
-    <!-- PAGE 3: DIET OPTIONS -->
+    <!-- PAGE 3: DIET OPTIONS (Calculator is hidden here) -->
     <section id="page-diet" class="page-section px-4">
         <div class="max-w-4xl mx-auto pt-6 flex flex-col items-center">
             <h1 class="text-2xl font-bold mb-6 text-[#23270d]">Diet Options & Plans</h1>
@@ -141,23 +151,24 @@
     <script>
         // NAVIGATION LOGIC
         function switchPage(pageId) {
-            // 1. Hide ALL sections
-            document.querySelectorAll('.page-section').forEach(section => {
+            // 1. Hide every single section with class 'page-section'
+            const allSections = document.querySelectorAll('.page-section');
+            allSections.forEach(section => {
                 section.classList.remove('active');
             });
             
-            // 2. Remove active state from ALL tabs
+            // 2. Clear navigation highlight
             document.querySelectorAll('.nav-item').forEach(tab => {
                 tab.classList.remove('active');
             });
             
-            // 3. Show the requested section
-            const targetPage = document.getElementById('page-' + pageId);
-            if (targetPage) {
-                targetPage.classList.add('active');
+            // 3. Only show the specific ID requested (e.g., page-calc)
+            const target = document.getElementById('page-' + pageId);
+            if (target) {
+                target.classList.add('active');
             }
             
-            // 4. Highlight the requested tab
+            // 4. Highlight the correct tab
             const targetTab = document.getElementById('tab-' + pageId);
             if (targetTab) {
                 targetTab.classList.add('active');
@@ -188,7 +199,7 @@
             const height = parseFloat(document.getElementById('height').value);
             
             if (!selectedGender || !selectedActivityLevel || !age || !weight || !height) {
-                return alert("Please fill everything!");
+                return alert("Please fill all details!");
             }
 
             let bmr = (selectedGender === 'male') 
