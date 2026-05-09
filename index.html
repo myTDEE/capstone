@@ -3,204 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness App</title>
+    <title>Fitness Hub</title>
     
+    <!-- Scripts & Fonts from your original code -->
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        * { font-family: 'Poppins', sans-serif; }
-        
-        /* Hide sections by default */
-        .page-content { display: none; min-height: 100vh; width: 100%; padding-bottom: 100px; }
-        .page-content.active { display: block; animation: fadeIn 0.3s ease-in; }
+        /* APP NAVIGATION LOGIC */
+        .page-section { display: none; min-height: 100vh; padding-top: 70px; width: 100%; }
+        .page-section.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Bottom Tab Bar */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70px;
-            background: #ffffff;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #e2e8f0;
-            z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        .nav-bar {
+            position: fixed; top: 0; left: 0; width: 100%; background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;
+            display: flex; justify-content: space-around; padding: 12px 0;
         }
-
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #94a3b8;
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
+            color: #64748b; font-weight: 500; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; font-size: 0.75rem;
         }
+        .nav-item.active { color: #23270d; font-weight: 700; }
 
-        .nav-item.active { color: #23270d; }
+        /* YOUR ORIGINAL CALCULATOR STYLES */
+        * { font-family: 'Poppins', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(180deg, #f8f6f4 0%, #f1f5bc 25%, #ecf2a0 50%, #e4f28a 75%, #f8f6f4 100%);
+        }
+        .card-gradient {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.98) 100%);
+            backdrop-filter: blur(10px);
+        }
+        .glow-effect {
+            box-shadow: 0 0 30px rgba(160, 185, 217, 0.08), 0 0 60px rgba(160, 185, 217, 0.04);
+        }
+        .result-card {
+            background: linear-gradient(135deg, rgba(208, 220, 235, 0.25) 0%, rgba(248, 246, 244, 0.2) 100%);
+            border: 1px solid rgba(160, 185, 217, 0.15);
+        }
+        .activity-btn.active {
+            background: linear-gradient(135deg, #a0b9d9 0%, #a0b9d9 100%);
+            border-color: transparent;
+            color: white;
+        }
+        .animate-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Calculator Styles */
-        .gradient-bg { background: linear-gradient(180deg, #f8f6f4 0%, #f1f5bc 100%); }
-        .activity-btn.active { background: #23270d; color: white; border-color: #23270d; }
-        
-        /* Canva Container */
-        .canva-wrapper {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            overflow: hidden;
-            border-radius: 0 0 20px 20px;
+        /* CANVA EMBED BOX */
+        .canva-container {
+            position: relative; width: 100%; height: 0; padding-top: 56.25%;
+            overflow: hidden; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
     </style>
 </head>
-<body class="bg-slate-50 h-full">
+<body class="h-full bg-slate-50">
 
-    <!-- PAGE 1: HOME -->
-    <main id="page-home" class="page-content active">
-        <!-- Intro Slide -->
-        <div class="canva-wrapper shadow-lg">
-            <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
-                src="https://www.canva.com/design/DAHFDXpSJgo/_yQz355KAXtsmI1DT7VzoA/view?embed">
-            </iframe>
+    <!-- TOP NAVIGATION -->
+    <nav class="nav-bar">
+        <div id="tab-home" class="nav-item active" onclick="switchPage('home')">
+            <i data-lucide="home" class="w-5 h-5 mb-1"></i><span>Home</span>
         </div>
+        <div id="tab-calc" class="nav-item" onclick="switchPage('calc')">
+            <i data-lucide="calculator" class="w-5 h-5 mb-1"></i><span>Calculator</span>
+        </div>
+        <div id="tab-diet" class="nav-item" onclick="switchPage('diet')">
+            <i data-lucide="utensils" class="w-5 h-5 mb-1"></i><span>Diet Options</span>
+        </div>
+    </nav>
 
-        <div class="p-8 text-center">
-            <h1 class="text-2xl font-bold text-slate-800 mb-2">Ready to start?</h1>
-            <p class="text-slate-500 mb-8">Calculate your TDEE and find your perfect diet.</p>
-            
-            <button onclick="showPage('calculator')" class="w-full max-w-xs bg-[#23270d] text-white py-4 rounded-2xl font-bold text-lg shadow-xl active:scale-95 transition-all">
-                Start Calculation →
+    <!-- PAGE 1: HOME (Canva Slide 1) -->
+    <section id="page-home" class="page-section active px-4">
+        <div class="max-w-4xl mx-auto flex flex-col items-center pt-6">
+            <div class="canva-container mb-8">
+                <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
+                    src="https://www.canva.com/design/DAHFDXpSJgo/_yQz355KAXtsmI1DT7VzoA/view?embed">
+                </iframe>
+            </div>
+            <button onclick="switchPage('calc')" class="px-8 py-4 bg-[#23270d] text-white rounded-full font-bold shadow-lg hover:scale-105 transition-all flex items-center gap-2">
+                <i data-lucide="play" class="w-5 h-5"></i> Start Calculation
             </button>
         </div>
-    </main>
+    </section>
 
-    <!-- PAGE 2: CALCULATOR -->
-    <main id="page-calculator" class="page-content gradient-bg">
-        <div class="p-6">
-            <div class="bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-white">
-                <h2 class="text-2xl font-bold text-center mb-6 text-[#23270d]">TDEE Calculator</h2>
-                
-                <div class="space-y-4">
-                    <!-- Gender -->
-                    <div class="flex gap-2">
-                        <button id="btn-male" onclick="setGender('male')" class="flex-1 py-3 border-2 rounded-xl font-semibold">Male</button>
-                        <button id="btn-female" onclick="setGender('female')" class="flex-1 py-3 border-2 rounded-xl font-semibold">Female</button>
+    <!-- PAGE 2: THE CALCULATOR (Restored Original Format) -->
+    <section id="page-calc" class="page-section gradient-bg px-4">
+        <div class="max-w-2xl mx-auto py-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold" style="color: #23270d;">TDEE Calculator</h1>
+                <p class="mt-2 text-slate-600">Understand Your Body’s Daily Calorie Needs</p>
+            </div>
+
+            <!-- RESTORED CALCULATOR CARD -->
+            <div class="card-gradient rounded-3xl p-6 md:p-8 glow-effect border border-slate-700/50">
+                <!-- Gender -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-slate-700 mb-3">Gender</label>
+                    <div class="flex gap-3">
+                        <button id="gender-male" onclick="selectGender('male')" class="flex-1 py-3 px-4 rounded-xl border-2 border-slate-300 bg-white/70 flex items-center justify-center gap-2 transition-all"> <i data-lucide="user" class="w-5 h-5"></i> <span>Male</span> </button> 
+                        <button id="gender-female" onclick="selectGender('female')" class="flex-1 py-3 px-4 rounded-xl border-2 border-slate-300 bg-white/70 flex items-center justify-center gap-2 transition-all"> <i data-lucide="user" class="w-5 h-5"></i> <span>Female</span> </button>
+                    </div>
+                </div>
+
+                <!-- Age, Weight, Height -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Age</label>
+                        <input type="number" id="age" placeholder="25" class="w-full bg-white/70 border-2 border-slate-300 rounded-xl py-3 px-4 outline-none focus:border-blue-400">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Weight (kg)</label>
+                        <input type="number" id="weight" placeholder="70" class="w-full bg-white/70 border-2 border-slate-300 rounded-xl py-3 px-4 outline-none focus:border-blue-400">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Height (cm)</label>
+                        <input type="number" id="height" placeholder="175" class="w-full bg-white/70 border-2 border-slate-300 rounded-xl py-3 px-4 outline-none focus:border-blue-400">
+                    </div>
+                </div>
+
+                <!-- Activity Level -->
+                <div class="mb-6 space-y-2">
+                    <label class="block text-sm font-medium text-slate-700 mb-3">Activity Level</label> 
+                    <button onclick="selectActivity(1.2)" data-activity="1.2" class="activity-btn w-full py-3 px-4 rounded-xl border-2 border-slate-300 bg-white/70 text-left transition-all"> <span class="font-medium">Sedentary</span> <span class="text-slate-500 text-xs ml-2">No exercise</span> </button> 
+                    <button onclick="selectActivity(1.375)" data-activity="1.375" class="activity-btn w-full py-3 px-4 rounded-xl border-2 border-slate-300 bg-white/70 text-left transition-all"> <span class="font-medium">Light</span> <span class="text-slate-500 text-xs ml-2">1-3 days/week</span> </button> 
+                    <button onclick="selectActivity(1.55)" data-activity="1.55" class="activity-btn w-full py-3 px-4 rounded-xl border-2 border-slate-300 bg-white/70 text-left transition-all"> <span class="font-medium">Moderate</span> <span class="text-slate-500 text-xs ml-2">3-5 days/week</span> </button> 
+                    <button onclick="selectActivity(1.725)" data-activity="1.725" class="activity-btn w-full py-3 px-4 rounded-xl border-2 border-slate-300 bg-white/70 text-left transition-all"> <span class="font-medium">Active</span> <span class="text-slate-500 text-xs ml-2">6-7 days/week</span> </button>
+                </div>
+
+                <!-- Calculate Button -->
+                <button id="calculate-btn" onclick="calculateTDEE()" class="w-full py-4 rounded-xl font-bold text-lg text-white transition-all" style="background: linear-gradient(135deg, #91adc0 0%, #6d93aa 100%);">
+                    Calculate TDEE
+                </button>
+
+                <!-- RESTORED RESULTS SECTION -->
+                <div id="results" class="hidden mt-8 animate-in">
+                    <div class="h-px bg-slate-300 mb-8"></div>
+                    <div class="result-card rounded-2xl p-6 text-center mb-6">
+                        <p class="text-slate-600 text-sm">Your Maintenance TDEE</p>
+                        <p id="tdee-result" class="text-5xl font-bold bg-gradient-to-r from-blue-500 to-slate-700 bg-clip-text text-transparent">0</p>
+                        <p class="text-slate-500 text-xs">calories/day</p>
                     </div>
 
-                    <!-- Metrics -->
-                    <div class="grid grid-cols-3 gap-2">
-                        <input type="number" id="age" placeholder="Age" class="w-full p-3 rounded-xl border border-slate-200">
-                        <input type="number" id="weight" placeholder="kg" class="w-full p-3 rounded-xl border border-slate-200">
-                        <input type="number" id="height" placeholder="cm" class="w-full p-3 rounded-xl border border-slate-200">
+                    <div class="bg-blue-50 rounded-xl p-4 mb-4 flex justify-between items-center">
+                        <span class="text-sm font-medium">BMR (At rest)</span>
+                        <span id="bmr-result" class="font-bold text-slate-800">0 cal</span>
                     </div>
 
-                    <!-- Activity -->
-                    <div class="space-y-2">
-                        <button onclick="setAct(1.2)" data-act="1.2" class="act-btn w-full p-3 border rounded-xl text-left text-sm bg-white">Sedentary</button>
-                        <button onclick="setAct(1.55)" data-act="1.55" class="act-btn w-full p-3 border rounded-xl text-left text-sm bg-white">Moderate</button>
-                        <button onclick="setAct(1.9)" data-act="1.9" class="act-btn w-full p-3 border rounded-xl text-left text-sm bg-white">Very Active</button>
+                    <div class="grid grid-cols-3 gap-2 mb-6">
+                        <div class="bg-emerald-50 p-3 rounded-xl text-center border border-emerald-100">
+                            <p class="text-[10px] text-slate-500">Loss</p>
+                            <p id="loss-result" class="font-bold text-emerald-600 text-sm">0</p>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-xl text-center border border-blue-100">
+                            <p class="text-[10px] text-slate-500">Maintain</p>
+                            <p id="maintain-result" class="font-bold text-blue-600 text-sm">0</p>
+                        </div>
+                        <div class="bg-violet-50 p-3 rounded-xl text-center border border-violet-100">
+                            <p class="text-[10px] text-slate-500">Gain</p>
+                            <p id="gain-result" class="font-bold text-violet-600 text-sm">0</p>
+                        </div>
                     </div>
 
-                    <button onclick="runCalc()" class="w-full py-4 bg-[#23270d] text-white rounded-xl font-bold text-lg">Calculate</button>
-
-                    <div id="res-box" class="hidden text-center pt-4 animate-in">
-                        <span class="text-slate-500 text-xs">Your Daily Calories:</span>
-                        <div id="res-val" class="text-4xl font-black text-[#23270d]">0</div>
-                        <button onclick="showPage('diet')" class="mt-4 text-sm font-bold text-blue-600 underline">View Diet Options →</button>
+                    <div class="bg-slate-50 rounded-xl p-4">
+                        <p class="text-xs font-bold text-slate-800 mb-3">Daily Macros (Maintenance)</p>
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div><p id="protein-result" class="font-bold text-blue-600">0g</p><p class="text-[10px]">Protein</p></div>
+                            <div><p id="carbs-result" class="font-bold text-indigo-600">0g</p><p class="text-[10px]">Carbs</p></div>
+                            <div><p id="fat-result" class="font-bold text-violet-600">0g</p><p class="text-[10px]">Fat</p></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
 
-    <!-- PAGE 3: DIET OPTIONS -->
-    <main id="page-diet" class="page-content">
-        <div class="p-4 bg-[#23270d] text-white text-center py-6">
-            <h1 class="text-xl font-bold">Diet Options</h1>
-        </div>
-        
-        <div class="canva-wrapper shadow-lg">
-            <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
-                src="https://www.canva.com/design/DAHJKjUO96c/PjFDdqxKplaqSv5udvLMow/view?embed">
-            </iframe>
-        </div>
-        
-        <div class="p-8">
-            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100">
-                <p class="text-blue-800 text-sm"><b>Pro Tip:</b> High protein diets help maintain muscle while losing fat!</p>
+    <!-- PAGE 3: DIET OPTIONS (Canva Slide 2) -->
+    <section id="page-diet" class="page-section px-4">
+        <div class="max-w-4xl mx-auto pt-6 flex flex-col items-center">
+            <h1 class="text-2xl font-bold mb-6 text-[#23270d]">Diet Options & Plans</h1>
+            <div class="canva-container">
+                <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
+                    src="https://www.canva.com/design/DAHJKjUO96c/PjFDdqxKplaqSv5udvLMow/view?embed">
+                </iframe>
             </div>
         </div>
-    </main>
-
-    <!-- BOTTOM TAB NAVIGATION -->
-    <nav class="bottom-nav">
-        <div onclick="showPage('home')" id="tab-home" class="nav-item active">
-            <i data-lucide="home"></i>
-            <span>Home</span>
-        </div>
-        <div onclick="showPage('calculator')" id="tab-calculator" class="nav-item">
-            <i data-lucide="calculator"></i>
-            <span>Calculator</span>
-        </div>
-        <div onclick="showPage('diet')" id="tab-diet" class="nav-item">
-            <i data-lucide="apple"></i>
-            <span>Diet</span>
-        </div>
-    </nav>
+    </section>
 
     <script>
-        // --- NAVIGATION ---
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            // Reset all tabs
-            document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('active'));
+        // NAVIGATION LOGIC
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             
-            // Show target page
             document.getElementById('page-' + pageId).classList.add('active');
-            // Active tab
-            document.getElementById('tab-' + pageId).classList.add('active');
             
+            const tabId = pageId === 'home' ? 'tab-home' : (pageId === 'calc' ? 'tab-calc' : 'tab-diet');
+            document.getElementById(tabId).classList.add('active');
             window.scrollTo(0, 0);
         }
 
-        // --- CALCULATOR LOGIC ---
-        let sex = null;
-        let activity = null;
+        // TDEE LOGIC (RESTORED FROM YOUR ORIGINAL)
+        let selectedGender = null;
+        let selectedActivity = null;
 
-        function setGender(val) {
-            sex = val;
-            document.getElementById('btn-male').style.borderColor = val === 'male' ? '#23270d' : '#e2e8f0';
-            document.getElementById('btn-female').style.borderColor = val === 'female' ? '#23270d' : '#e2e8f0';
+        function selectGender(gender) {
+            selectedGender = gender;
+            document.getElementById('gender-male').classList.remove('border-blue-500', 'bg-blue-500/10');
+            document.getElementById('gender-female').classList.remove('border-blue-500', 'bg-blue-500/10');
+            document.getElementById(`gender-${gender}`).classList.add('border-blue-500', 'bg-blue-500/10');
         }
 
-        function setAct(val) {
-            activity = val;
-            document.querySelectorAll('.act-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector(`[data-act="${val}"]`).classList.add('active');
+        function selectActivity(level) {
+            selectedActivity = level;
+            document.querySelectorAll('.activity-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-activity="${level}"]`).classList.add('active');
         }
 
-        function runCalc() {
-            const a = document.getElementById('age').value;
-            const w = document.getElementById('weight').value;
-            const h = document.getElementById('height').value;
+        function calculateTDEE() {
+            const age = parseInt(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
             
-            if(!sex || !activity || !a || !w || !h) return alert("Please fill all info");
+            if (!selectedGender || !selectedActivity || !age || !weight || !height) return alert("Please fill everything!");
 
-            let bmr = (sex === 'male') ? (10 * w) + (6.25 * h) - (5 * a) + 5 : (10 * w) + (6.25 * h) - (5 * a) - 161;
-            let result = Math.round(bmr * activity);
+            let bmr = (selectedGender === 'male') 
+                ? (10 * weight) + (6.25 * height) - (5 * age) + 5 
+                : (10 * weight) + (6.25 * height) - (5 * age) - 161;
 
-            document.getElementById('res-val').innerText = result.toLocaleString();
-            document.getElementById('res-box').classList.remove('hidden');
+            const tdee = Math.round(bmr * selectedActivity);
+            const protein = Math.round((tdee * 0.3) / 4);
+            const carbs = Math.round((tdee * 0.4) / 4);
+            const fat = Math.round((tdee * 0.3) / 9);
+
+            document.getElementById('tdee-result').textContent = tdee.toLocaleString();
+            document.getElementById('bmr-result').textContent = Math.round(bmr).toLocaleString() + " cal";
+            document.getElementById('loss-result').textContent = (tdee - 500).toLocaleString();
+            document.getElementById('maintain-result').textContent = tdee.toLocaleString();
+            document.getElementById('gain-result').textContent = (tdee + 500).toLocaleString();
+            document.getElementById('protein-result').textContent = protein + "g";
+            document.getElementById('carbs-result').textContent = carbs + "g";
+            document.getElementById('fat-result').textContent = fat + "g";
+
+            document.getElementById('results').classList.remove('hidden');
+            setTimeout(() => document.getElementById('results').scrollIntoView({ behavior: 'smooth' }), 100);
         }
 
         lucide.createIcons();
