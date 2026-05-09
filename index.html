@@ -10,9 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        * { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        * { font-family: 'Poppins', sans-serif; }
         
-        /* PAGE NAVIGATION */
         .page-section { display: none; min-height: 100vh; padding-top: 80px; width: 100%; }
         .page-section.active { display: block !important; }
 
@@ -27,7 +26,6 @@
         }
         .nav-item.active { color: #23270d; font-weight: 700; }
 
-        /* THEME COLORS */
         .gradient-bg {
             background: linear-gradient(180deg, #f8f6f4 0%, #f1f5bc 25%, #ecf2a0 50%, #e4f28a 75%, #f8f6f4 100%);
         }
@@ -36,20 +34,25 @@
             backdrop-filter: blur(10px);
         }
 
-        /* LIGHT BLUE SELECTION COLOR */
+        /* 1. BUTTON SELECTION COLOR (BLUE) */
         .activity-btn.active, .gender-btn.active {
             background: #a0b9d9 !important;
             border-color: #a0b9d9 !important;
             color: white !important;
         }
 
+        /* Results Styling to match image */
+        .result-box {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            padding: 1.25rem;
+        }
+
         .canva-container {
             position: relative; width: 100%; height: 0; padding-top: 56.25%;
             overflow: hidden; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-
-        .animate-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="h-full bg-slate-50">
@@ -86,20 +89,18 @@
         <div class="max-w-2xl mx-auto pb-12">
             <div class="text-center mb-6">
                 <h1 class="text-3xl font-bold text-[#23270d]">TDEE Calculator</h1>
-                <p class="text-slate-600">Find your daily calorie needs</p>
             </div>
            
             <div class="card-gradient rounded-3xl p-6 md:p-8 shadow-2xl border border-white/50">
-                <!-- GENDER -->
+                <!-- Inputs -->
                 <div class="mb-6">
-                    <label class="block text-sm font-semibold mb-3 text-slate-700">Gender</label>
+                    <label class="block text-sm font-semibold mb-3">Gender</label>
                     <div class="flex gap-3">
                         <button id="gender-male" onclick="selectGender('male')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white transition-all">Male</button>
                         <button id="gender-female" onclick="selectGender('female')" class="gender-btn flex-1 py-3 rounded-xl border-2 border-slate-200 bg-white transition-all">Female</button>
                     </div>
                 </div>
 
-                <!-- METRICS -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Age</label>
@@ -115,9 +116,8 @@
                     </div>
                 </div>
 
-                <!-- ACTIVITY -->
                 <div class="mb-8">
-                    <label class="block text-sm font-semibold mb-3 text-slate-700">Activity Level</label>
+                    <label class="block text-sm font-semibold mb-3">Activity Level</label>
                     <div class="space-y-2">
                         <button onclick="selectActivity(1.2, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm transition-all">Sedentary (No Exercise)</button>
                         <button onclick="selectActivity(1.55, this)" class="activity-btn w-full p-3 bg-white border-2 border-slate-100 rounded-xl text-left text-sm transition-all">Moderate (3-5 days/week)</button>
@@ -125,63 +125,82 @@
                     </div>
                 </div>
 
-                <button onclick="calculateTDEE()" class="w-full py-4 bg-[#23270d] text-white rounded-2xl font-bold text-lg shadow-lg hover:opacity-90 transition-all">
+                <button onclick="calculateTDEE()" class="w-full py-4 bg-[#23270d] text-white rounded-2xl font-bold text-lg shadow-lg hover:opacity-90">
                     Calculate Results
                 </button>
 
-                <!-- DETAILED RESULTS SECTION (HIDDEN UNTIL CALCULATION) -->
-                <div id="results" class="hidden mt-8 pt-8 border-t border-slate-200 animate-in">
+                <!-- 2. IMAGE-MATCHED RESULTS SECTION -->
+                <div id="results" class="hidden mt-10 space-y-6">
                     
-                    <!-- MAIN CALORIES -->
-                    <div class="text-center mb-8">
-                        <p class="text-slate-500 text-sm">Your Maintenance Calories (TDEE)</p>
-                        <h2 class="text-5xl font-extrabold text-[#23270d]" id="tdee-result">0</h2>
-                        <p class="text-slate-400 text-xs mt-1 italic">BMR: <span id="bmr-result">0</span></p>
+                    <!-- TDEE Header -->
+                    <div class="text-center">
+                        <p class="text-slate-500 font-medium text-sm">Your TDEE (Maintenance)</p>
+                        <h2 class="text-6xl font-bold text-[#1e40af] my-1" id="tdee-main">0</h2>
+                        <p class="text-slate-500 text-sm">calories/day</p>
                     </div>
 
-                    <!-- WEIGHT GOALS GRID -->
-                    <div class="grid grid-cols-3 gap-3 text-center mb-8">
-                        <div class="bg-blue-50 p-3 rounded-2xl border border-blue-100">
-                            <p class="text-[10px] font-bold text-blue-500 uppercase tracking-wider">Lose Weight</p>
-                            <p id="loss-result" class="text-lg font-bold text-blue-900">0</p>
-                        </div>
-                        <div class="bg-green-50 p-3 rounded-2xl border-2 border-green-200">
-                            <p class="text-[10px] font-bold text-green-600 uppercase tracking-wider">Maintain</p>
-                            <p id="maintain-result" class="text-lg font-bold text-green-900">0</p>
-                        </div>
-                        <div class="bg-orange-50 p-3 rounded-2xl border border-orange-100">
-                            <p class="text-[10px] font-bold text-orange-500 uppercase tracking-wider">Gain Weight</p>
-                            <p id="gain-result" class="text-lg font-bold text-orange-900">0</p>
-                        </div>
-                    </div>
-
-                    <!-- MACRONUTRIENTS -->
-                    <div class="bg-slate-50 rounded-2xl p-5 mb-8 border border-slate-100">
-                        <h4 class="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Suggested Daily Macros</h4>
-                        <div class="grid grid-cols-3 gap-2">
-                            <div class="text-center">
-                                <p class="text-xs text-slate-500">Protein</p>
-                                <p id="protein-result" class="font-bold text-[#23270d]">-</p>
+                    <!-- BMR Row -->
+                    <div class="flex items-center justify-between bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-blue-100 p-2 rounded-lg">
+                                <i data-lucide="heart-pulse" class="text-blue-600 w-5 h-5"></i>
                             </div>
-                            <div class="text-center border-x border-slate-200">
-                                <p class="text-xs text-slate-500">Carbs</p>
-                                <p id="carbs-result" class="font-bold text-[#23270d]">-</p>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-xs text-slate-500">Fats</p>
-                                <p id="fat-result" class="font-bold text-[#23270d]">-</p>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase leading-tight">Basal Metabolic Rate</p>
+                                <p class="text-sm font-bold text-slate-700">BMR (At rest)</p>
                             </div>
                         </div>
+                        <p class="text-xl font-bold text-slate-800"><span id="bmr-val">0</span> cal</p>
                     </div>
 
-                    <!-- DIET OPTIONS BUTTON (ONLY IN RESULTS) -->
-                    <div class="bg-[#a0b9d9]/10 p-5 rounded-2xl border-2 border-dashed border-[#a0b9d9]">
-                        <p class="text-sm text-slate-600 text-center mb-4">Use these numbers to pick the right meal plan!</p>
-                        <button onclick="switchPage('diet')" class="w-full py-4 bg-[#23270d] text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:scale-[1.02] transition-all">
-                            <i data-lucide="utensils" class="w-5 h-5"></i> View Detailed Diet Plans
-                        </button>
+                    <!-- 3 Column Goals Grid -->
+                    <div class="grid grid-cols-3 gap-3">
+                        <!-- Weight Loss -->
+                        <div class="result-box text-center border-green-100">
+                            <i data-lucide="trending-down" class="w-5 h-5 mx-auto text-green-500 mb-1"></i>
+                            <p class="text-[10px] text-slate-400 font-bold">Weight Loss</p>
+                            <p id="loss-val" class="text-lg font-bold text-green-600">0</p>
+                            <p class="text-[9px] text-slate-400">-500 cal/day</p>
+                        </div>
+                        <!-- Maintain -->
+                        <div class="result-box text-center border-blue-100">
+                            <i data-lucide="minus" class="w-5 h-5 mx-auto text-blue-500 mb-1"></i>
+                            <p class="text-[10px] text-slate-400 font-bold">Maintain</p>
+                            <p id="maintain-val" class="text-lg font-bold text-blue-600">0</p>
+                            <p class="text-[9px] text-slate-400">TDEE</p>
+                        </div>
+                        <!-- Weight Gain -->
+                        <div class="result-box text-center border-purple-100">
+                            <i data-lucide="trending-up" class="w-5 h-5 mx-auto text-purple-500 mb-1"></i>
+                            <p class="text-[10px] text-slate-400 font-bold">Weight Gain</p>
+                            <p id="gain-val" class="text-lg font-bold text-purple-600">0</p>
+                            <p class="text-[9px] text-slate-400">+500 cal/day</p>
+                        </div>
                     </div>
 
+                    <!-- Suggested Macros -->
+                    <div class="pt-4">
+                        <p class="text-sm font-bold text-slate-700 mb-4">Suggested Macros (Maintenance)</p>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div>
+                                <p id="prot-val" class="text-3xl font-bold text-blue-700">0g</p>
+                                <p class="text-xs text-slate-400 font-medium">Protein</p>
+                            </div>
+                            <div>
+                                <p id="carb-val" class="text-3xl font-bold text-blue-700">0g</p>
+                                <p class="text-xs text-slate-400 font-medium">Carbs</p>
+                            </div>
+                            <div>
+                                <p id="fat-val" class="text-3xl font-bold text-blue-700">0g</p>
+                                <p class="text-xs text-slate-400 font-medium">Fat</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diet Options Button -->
+                    <button onclick="switchPage('diet')" class="w-full mt-6 py-4 bg-[#23270d] text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg">
+                        <i data-lucide="utensils" class="w-5 h-5"></i> View Diet Options
+                    </button>
                 </div>
             </div>
         </div>
@@ -196,7 +215,7 @@
                     src="https://www.canva.com/design/DAHJKjUO96c/PjFDdqxKplaqSv5udvLMow/view?embed">
                 </iframe>
             </div>
-            <button onclick="switchPage('calc')" class="mt-8 text-slate-400 flex items-center gap-2 mb-10 hover:text-[#23270d]">
+            <button onclick="switchPage('calc')" class="mt-8 text-slate-500 flex items-center gap-2 mb-10">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Calculator
             </button>
         </div>
@@ -204,13 +223,11 @@
 
     <script>
         function switchPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(tab => tab.classList.remove('active'));
-            
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
-            document.getElementById('tab-' + pageId).classList.add('active');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('tab-' + (pageId === 'home' ? 'home' : (pageId === 'calc' ? 'calc' : 'diet'))).classList.add('active');
+            window.scrollTo(0, 0);
         }
 
         let selectedGender = null;
@@ -234,40 +251,34 @@
             const height = parseFloat(document.getElementById('height').value);
             
             if (!selectedGender || !selectedActivityLevel || !age || !weight || !height) {
-                return alert("Please fill all details first!");
+                return alert("Please fill all details.");
             }
 
-            // BMR calculation (Mifflin-St Jeor)
+            // Mifflin-St Jeor
             let bmr = (selectedGender === 'male') 
                 ? (10 * weight) + (6.25 * height) - (5 * age) + 5 
                 : (10 * weight) + (6.25 * height) - (5 * age) - 161;
 
             const tdee = Math.round(bmr * selectedActivityLevel);
             
-            // Macros (30% Protein, 40% Carbs, 30% Fat)
+            // Logic to match the image values exactly (30% Protein, 40% Carb, 30% Fat)
             const protein = Math.round((tdee * 0.30) / 4);
             const carbs = Math.round((tdee * 0.40) / 4);
             const fat = Math.round((tdee * 0.30) / 9);
 
-            // Populate UI
-            document.getElementById('tdee-result').textContent = tdee.toLocaleString();
-            document.getElementById('bmr-result').textContent = Math.round(bmr).toLocaleString() + " cal";
+            // Update UI
+            document.getElementById('tdee-main').textContent = tdee.toLocaleString();
+            document.getElementById('bmr-val').textContent = Math.round(bmr).toLocaleString();
+            document.getElementById('maintain-val').textContent = tdee.toLocaleString();
+            document.getElementById('loss-val').textContent = (tdee - 500).toLocaleString();
+            document.getElementById('gain-val').textContent = (tdee + 500).toLocaleString();
             
-            document.getElementById('loss-result').textContent = (tdee - 500).toLocaleString();
-            document.getElementById('maintain-result').textContent = tdee.toLocaleString();
-            document.getElementById('gain-result').textContent = (tdee + 500).toLocaleString();
-            
-            document.getElementById('protein-result').textContent = protein + "g";
-            document.getElementById('carbs-result').textContent = carbs + "g";
-            document.getElementById('fat-result').textContent = fat + "g";
+            document.getElementById('prot-val').textContent = protein + "g";
+            document.getElementById('carb-val').textContent = carbs + "g";
+            document.getElementById('fat-val').textContent = fat + "g";
 
-            // Show results
             document.getElementById('results').classList.remove('hidden');
-            
-            // Smooth scroll to results
-            setTimeout(() => {
-                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            setTimeout(() => { document.getElementById('results').scrollIntoView({ behavior: 'smooth' }); }, 100);
         }
 
         lucide.createIcons();
