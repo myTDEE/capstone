@@ -30,14 +30,14 @@
             min-height: 100vh; 
             width: 100vw; 
             position: relative; 
-            overflow-y: auto; /* Allows scrolling for footer/tips */
+            overflow-y: auto;
         }
         .page-section.active { display: block !important; }
 
         /* FULL SCREEN IFRAME HEIGHT */
         .fullscreen-iframe {
             width: 100%;
-            height: 100vh; /* Slide takes full screen initially */
+            height: 100vh; 
             border: none;
             display: block;
         }
@@ -45,7 +45,7 @@
         /* FLOATING BUTTONS */
         .floating-action {
             position: absolute;
-            top: 85vh; /* Positioned near bottom of the first view */
+            top: 85vh; 
             left: 50%;
             transform: translateX(-50%);
             z-index: 50;
@@ -53,7 +53,7 @@
 
         /* CALCULATOR PAGE STYLING */
         .calc-scroll-area {
-            padding: 100px 20px 60px 20px;
+            padding: 100px 20px 20px 20px;
             background: linear-gradient(180deg, #f8f6f4 0%, #f1f5bc 25%, #ecf2a0 50%, #e4f28a 75%, #f8f6f4 100%);
         }
 
@@ -71,16 +71,13 @@
             padding: 1.25rem;
         }
 
-        /* FOOTER & TIPS STYLING */
-        .info-footer {
+        /* SHARED FOOTER STYLING */
+        .contributor-footer {
             background: white;
-            padding: 40px 20px;
+            padding: 30px 20px;
             text-align: center;
-            border-top: 1px solid #eee;
-        }
-        .tips-container {
-            background: #f8fafc;
-            padding: 60px 20px;
+            border-top: 1px solid #f1f5f9;
+            width: 100%;
         }
     </style>
 </head>
@@ -101,7 +98,6 @@
 
     <!-- PAGE 1: HOME -->
     <section id="page-home" class="page-section active">
-        <!-- Full Screen Slide -->
         <iframe class="fullscreen-iframe" src="https://www.canva.com/design/DAHFDXpSJgo/_yQz355KAXtsmI1DT7VzoA/view?embed"></iframe>
         
         <div class="floating-action">
@@ -110,28 +106,24 @@
             </button>
         </div>
 
-        <!-- NEW FOOTER -->
-        <footer class="info-footer">
-            <div class="max-w-2xl mx-auto">
-                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Contributors</p>
-                <p class="text-slate-600 text-sm leading-relaxed">
-                    <b>Pannapas Jesadapatarakul (Punpun)</b> 6761286 <br>
-                    & <b>Mathita Tangputtithada (Pingping)</b> 6761193
-                </p>
-            </div>
+        <!-- FOOTER 1 -->
+        <footer class="contributor-footer">
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Contributors</p>
+            <p class="text-slate-600 text-xs">
+                1. Pannapas Jesadapatarakul (Punpun) 6761286 &nbsp; | &nbsp; 2. Mathita Tangputtithada (Pingping) 6761193
+            </p>
         </footer>
     </section>
 
     <!-- PAGE 2: THE CALCULATOR -->
     <section id="page-calc" class="page-section">
         <div class="calc-scroll-area">
-            <div class="max-w-2xl mx-auto">
+            <div class="max-w-2xl mx-auto mb-10">
                 <div class="text-center mb-6">
                     <h1 class="text-3xl font-bold text-[#23270d]">TDEE Calculator</h1>
                 </div>
                
                 <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 md:p-8 shadow-2xl border border-white">
-                    <!-- Inputs -->
                     <div class="mb-6">
                         <label class="block text-sm font-semibold mb-3">Gender</label>
                         <div class="flex gap-3">
@@ -166,7 +158,7 @@
 
                     <button onclick="calculateTDEE()" class="w-full py-4 bg-[#23270d] text-white rounded-2xl font-bold text-lg shadow-lg">Calculate Results</button>
 
-                    <!-- RESULTS AREA (IMAGE MATCHED) -->
+                    <!-- RESULTS AREA -->
                     <div id="results" class="hidden mt-10 space-y-6">
                         <div class="text-center">
                             <p class="text-slate-500 font-medium text-sm">Your TDEE (Maintenance)</p>
@@ -175,8 +167,8 @@
                         </div>
 
                         <div class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                            <div class="flex items-center gap-3">
-                                <div class="bg-blue-100 p-2 rounded-lg text-blue-600"><i data-lucide="heart-pulse" class="w-5 h-5"></i></div>
+                            <div class="flex items-center gap-3 text-blue-600">
+                                <div class="bg-blue-100 p-2 rounded-lg"><i data-lucide="heart-pulse"></i></div>
                                 <div>
                                     <p class="text-[10px] text-slate-400 font-bold uppercase leading-tight">Basal Metabolic Rate</p>
                                     <p class="text-sm font-bold text-slate-700">BMR (At rest)</p>
@@ -186,7 +178,7 @@
                         </div>
 
                         <div class="grid grid-cols-3 gap-3">
-                            <div class="result-card-box text-center border-green-100">
+                            <div class="result-card-box text-center">
                                 <i data-lucide="trending-down" class="w-5 h-5 mx-auto text-green-500 mb-1"></i>
                                 <p class="text-[10px] text-slate-400 font-bold uppercase">Weight Loss</p>
                                 <p id="loss-val" class="text-lg font-bold text-green-600">0</p>
@@ -198,7 +190,7 @@
                                 <p id="maintain-val" class="text-lg font-bold text-blue-600">0</p>
                                 <p class="text-[9px] text-slate-400">TDEE</p>
                             </div>
-                            <div class="result-card-box text-center border-purple-100">
+                            <div class="result-card-box text-center">
                                 <i data-lucide="trending-up" class="w-5 h-5 mx-auto text-purple-500 mb-1"></i>
                                 <p class="text-[10px] text-slate-400 font-bold uppercase">Weight Gain</p>
                                 <p id="gain-val" class="text-lg font-bold text-purple-600">0</p>
@@ -221,6 +213,14 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- FOOTER 2 -->
+            <footer class="contributor-footer rounded-3xl">
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Contributors</p>
+                <p class="text-slate-600 text-xs">
+                    1. Pannapas Jesadapatarakul (Punpun) 6761286 &nbsp; | &nbsp; 2. Mathita Tangputtithada (Pingping) 6761193
+                </p>
+            </footer>
         </div>
     </section>
    
@@ -234,41 +234,34 @@
             </button>
         </div>
 
-        <!-- NEW TIPS SECTION -->
-        <div class="tips-container">
-            <div class="max-w-4xl mx-auto">
+        <div class="bg-[#f8fafc] py-12 px-4">
+            <div class="max-w-4xl mx-auto mb-10">
                 <h3 class="text-2xl font-bold text-[#23270d] mb-8 text-center">Essential Nutrition Tips</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex gap-4">
                         <div class="bg-blue-50 p-3 rounded-xl h-fit text-blue-500"><i data-lucide="droplets"></i></div>
                         <div>
                             <h4 class="font-bold text-slate-800">Hydration is Key</h4>
-                            <p class="text-sm text-slate-500">Drink at least 2-3 liters of water daily. Sometimes thirst is mistaken for hunger.</p>
+                            <p class="text-sm text-slate-500">Drink at least 2-3 liters of water daily to maintain energy and metabolism.</p>
                         </div>
                     </div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex gap-4">
                         <div class="bg-green-50 p-3 rounded-xl h-fit text-green-500"><i data-lucide="leaf"></i></div>
                         <div>
                             <h4 class="font-bold text-slate-800">Prioritize Whole Foods</h4>
-                            <p class="text-sm text-slate-500">Focus on lean proteins, complex carbs, and plenty of vegetables over processed snacks.</p>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex gap-4">
-                        <div class="bg-orange-50 p-3 rounded-xl h-fit text-orange-500"><i data-lucide="timer"></i></div>
-                        <div>
-                            <h4 class="font-bold text-slate-800">Consistency > Perfection</h4>
-                            <p class="text-sm text-slate-500">One "bad" meal won't ruin your progress. Stay consistent with your daily averages.</p>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex gap-4">
-                        <div class="bg-purple-50 p-3 rounded-xl h-fit text-purple-500"><i data-lucide="moon"></i></div>
-                        <div>
-                            <h4 class="font-bold text-slate-800">Rest & Recover</h4>
-                            <p class="text-sm text-slate-500">Aim for 7-9 hours of sleep. Muscles grow and fat burns while you sleep!</p>
+                            <p class="text-sm text-slate-500">Focus on lean proteins and veggies over highly processed snacks.</p>
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- FOOTER 3 -->
+            <footer class="contributor-footer bg-transparent border-t-0">
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">Contributors</p>
+                <p class="text-slate-600 text-xs">
+                    1. Pannapas Jesadapatarakul (Punpun) 6761286 &nbsp; | &nbsp; 2. Mathita Tangputtithada (Pingping) 6761193
+                </p>
+            </footer>
         </div>
     </section>
 
@@ -315,19 +308,16 @@
                 : (10 * weight) + (6.25 * height) - (5 * age) - 161;
 
             const tdee = Math.round(bmr * selectedActivityLevel);
-            const protein = Math.round((tdee * 0.3) / 4);
-            const carbs = Math.round((tdee * 0.4) / 4);
-            const fat = Math.round((tdee * 0.3) / 9);
-
+            
             document.getElementById('tdee-main').textContent = tdee.toLocaleString();
             document.getElementById('bmr-val').textContent = Math.round(bmr).toLocaleString();
             document.getElementById('maintain-val').textContent = tdee.toLocaleString();
             document.getElementById('loss-val').textContent = (tdee - 500).toLocaleString();
             document.getElementById('gain-val').textContent = (tdee + 500).toLocaleString();
             
-            document.getElementById('prot-val').textContent = protein + "g";
-            document.getElementById('carb-val').textContent = carbs + "g";
-            document.getElementById('fat-val').textContent = fat + "g";
+            document.getElementById('prot-val').textContent = Math.round((tdee * 0.3) / 4) + "g";
+            document.getElementById('carb-val').textContent = Math.round((tdee * 0.4) / 4) + "g";
+            document.getElementById('fat-val').textContent = Math.round((tdee * 0.3) / 9) + "g";
 
             document.getElementById('results').classList.remove('hidden');
             lucide.createIcons();
